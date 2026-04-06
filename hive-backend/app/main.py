@@ -17,6 +17,8 @@ app = FastAPI()
 async def root():
     return {"message": "Hello world"}
 
+
+#Posts-------------------------------------------------------
 @app.get("/posts")
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
@@ -64,3 +66,8 @@ def update_post(id: str, post:schemas.PostCreate, db: Session = Depends(get_db))
     db.commit()
 
     return post_query.first()
+
+#Users-------------------------------------------------------
+@app.post("/users", status_code=status.HTTP_201_CREATED)
+def create_user(db: Session = Depends(get_db)):
+    pass

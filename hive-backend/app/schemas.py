@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 
@@ -18,3 +18,11 @@ class Post(PostBase):
     model_config = {
         "from_attributes": True
     }
+
+class UserCreate(BaseModel):
+    name: str
+    username: str
+    email: EmailStr
+    password: str
+    imageURL: Optional[str] = None
+    bio: Optional[str] = None
