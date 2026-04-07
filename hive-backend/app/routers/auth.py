@@ -5,11 +5,11 @@ from sqlalchemy.orm import Session
 from .. import database, schemas, models, utils, oauth2
 
 router = APIRouter(
-    prefix="/login",
+    prefix="",
     tags=['Authentication']
     )
 
-@router.post('/')
+@router.post('/login')
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     
     ## This OAuth2PasswordRequestForm doesn't store data according to my defined schema.
