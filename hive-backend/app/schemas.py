@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
+
 class PostBase(BaseModel):
     title: str
     content: str
@@ -12,9 +13,10 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
     pass
 
-
 class Post(PostBase):
+    id: UUID
     created_at: datetime
+    owner_id: UUID
 
     model_config = {
         "from_attributes": True
@@ -28,6 +30,7 @@ class UserCreate(BaseModel):
     imageURL: Optional[str] = None
     bio: Optional[str] = None
 
+
 class UserOut(BaseModel):
     id: UUID
     name: str
@@ -40,6 +43,8 @@ class UserOut(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+
 
 
 class UserLogin(BaseModel):
