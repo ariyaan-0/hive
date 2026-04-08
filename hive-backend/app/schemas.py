@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, Literal
 from datetime import datetime
 from uuid import UUID
 
@@ -77,3 +77,14 @@ class Post(PostBase):
         "from_attributes": True
     }
 
+class PostOut(BaseModel):
+    Post: Post
+    votes: int
+
+    model_config = {
+        "from_attributes": True
+    }
+
+class Vote(BaseModel):
+    post_id: UUID
+    dir: Literal[1, -1, 0]
