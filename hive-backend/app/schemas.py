@@ -4,30 +4,6 @@ from datetime import datetime
 from uuid import UUID
 
 
-class PostBase(BaseModel):
-    title: str
-    content: str
-    imageURL: Optional[str] = None
-    published: bool = True
-
-class PostCreate(PostBase):
-    pass
-
-class PostUpdate(BaseModel):
-    title: Optional[str] = None
-    content: Optional[str] = None
-    imageURL: Optional[str] = None
-    published: Optional[bool] = None
-
-class Post(PostBase):
-    id: UUID
-    created_at: datetime
-    owner_id: UUID
-
-    model_config = {
-        "from_attributes": True
-    }
-
 class UserCreate(BaseModel):
     name: str
     username: str
@@ -50,9 +26,6 @@ class UserOut(BaseModel):
         "from_attributes": True
     }
 
-
-
-
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
@@ -65,3 +38,31 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+
+
+class PostBase(BaseModel):
+    title: str
+    content: str
+    imageURL: Optional[str] = None
+    published: bool = True
+
+class PostCreate(PostBase):
+    pass
+
+class PostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    imageURL: Optional[str] = None
+    published: Optional[bool] = None
+
+class Post(PostBase):
+    id: UUID
+    created_at: datetime
+    owner_id: UUID
+    owner: UserOut
+
+    model_config = {
+        "from_attributes": True
+    }
+
