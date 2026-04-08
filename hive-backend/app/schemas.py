@@ -26,6 +26,17 @@ class UserOut(BaseModel):
         "from_attributes": True
     }
 
+class PostOwner(BaseModel):
+    id: UUID
+    name: str
+    username: str
+    imageURL: Optional[str] = None
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
@@ -60,7 +71,7 @@ class Post(PostBase):
     id: UUID
     created_at: datetime
     owner_id: UUID
-    owner: UserOut
+    owner: PostOwner
 
     model_config = {
         "from_attributes": True
