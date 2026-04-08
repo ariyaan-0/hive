@@ -13,6 +13,12 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
     pass
 
+class PostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    imageURL: Optional[str] = None
+    published: Optional[bool] = None
+
 class Post(PostBase):
     id: UUID
     created_at: datetime

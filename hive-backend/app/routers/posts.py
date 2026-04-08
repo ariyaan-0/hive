@@ -60,8 +60,8 @@ def delete_post(id: str, db: Session = Depends(get_db), current_user: models.Use
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put("/{id}")
-def update_post(id: str, post: schemas.PostCreate, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
+@router.patch("/{id}", response_model=schemas.Post)
+def update_post(id: str, post: schemas.PostUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post_found = post_query.first()
 
@@ -71,7 +71,14 @@ def update_post(id: str, post: schemas.PostCreate, db: Session = Depends(get_db)
     if post_found.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-    post_query.update(post.model_dump(), synchronize_session=False)
+    # Filter out fields that are not provided in the request body
+    update_data = post.model_dump(exclude_unset=True)
+    
+    if not update_data:
+        # If no fields are provided to update, just return the existing post
+        return post_found
+
+    post_query.update(update_data, synchronize_session=False)
     db.commit()
 
     return post_query.first()
