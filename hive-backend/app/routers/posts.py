@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Response
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from .. import models, schemas, oauth2
 from ..database import get_db
@@ -12,6 +12,20 @@ router = APIRouter(
 @router.get("/", response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
     posts = db.query(models.Post).all()
+    return posts
+
+@router.get("/user", response_model=List[schemas.Post])
+def get_user_posts(user_id: Optional[str] = None, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
+    """Fetch all posts for a specific user. If user_id is not provided, returns the current user's posts."""
+    if not user_id:
+        target_user_id = current_user.id
+    else:
+        user = db.query(models.User).filter(models.User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {user_id} was not found")
+        target_user_id = user_id
+
+    posts = db.query(models.Post).filter(models.Post.owner_id == target_user_id).order_by(models.Post.created_at.desc()).all()
     return posts
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
