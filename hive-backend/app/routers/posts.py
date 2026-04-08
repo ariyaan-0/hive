@@ -13,9 +13,21 @@ router = APIRouter(
 @router.get("/", response_model=List[schemas.PostOut])
 def get_posts(db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
     
-    posts = db.query(models.Post, func.coalesce(func.sum(models.Vote.dir), 0).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
-            models.Post.title.contains(search)).limit(limit).offset(skip).all()
+    # Using subqueries to avoid Cartesian product issues when joining votes and comments
+    votes_subquery = db.query(models.Vote.post_id, func.sum(models.Vote.dir).label("vote_sum")).group_by(models.Vote.post_id).subquery()
+    comments_subquery = db.query(models.Comment.post_id, func.count(models.Comment.id).label("comment_count")).group_by(models.Comment.post_id).subquery()
+
+    posts = db.query(
+        models.Post, 
+        func.coalesce(votes_subquery.c.vote_sum, 0).label("votes"),
+        func.coalesce(comments_subquery.c.comment_count, 0).label("comment_count")
+    ).outerjoin(
+        votes_subquery, models.Post.id == votes_subquery.c.post_id
+    ).outerjoin(
+        comments_subquery, models.Post.id == comments_subquery.c.post_id
+    ).filter(
+        models.Post.title.contains(search)
+    ).limit(limit).offset(skip).all()
     
     return posts
 
@@ -30,9 +42,20 @@ def get_user_posts(user_id: Optional[str] = None, db: Session = Depends(get_db),
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id: {user_id} was not found")
         target_user_id = user_id
 
-    posts = db.query(models.Post, func.coalesce(func.sum(models.Vote.dir), 0).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).filter(
-            models.Post.owner_id == target_user_id).group_by(models.Post.id).order_by(models.Post.created_at.desc()).all()
+    votes_subquery = db.query(models.Vote.post_id, func.sum(models.Vote.dir).label("vote_sum")).group_by(models.Vote.post_id).subquery()
+    comments_subquery = db.query(models.Comment.post_id, func.count(models.Comment.id).label("comment_count")).group_by(models.Comment.post_id).subquery()
+
+    posts = db.query(
+        models.Post, 
+        func.coalesce(votes_subquery.c.vote_sum, 0).label("votes"),
+        func.coalesce(comments_subquery.c.comment_count, 0).label("comment_count")
+    ).outerjoin(
+        votes_subquery, models.Post.id == votes_subquery.c.post_id
+    ).outerjoin(
+        comments_subquery, models.Post.id == comments_subquery.c.post_id
+    ).filter(
+        models.Post.owner_id == target_user_id
+    ).order_by(models.Post.created_at.desc()).all()
             
     return posts
 
@@ -47,9 +70,20 @@ def create_posts(post : schemas.PostCreate, db: Session = Depends(get_db), curre
 @router.get("/{id}", response_model=schemas.PostOut)
 def get_post(id: str, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
     
-    post = db.query(models.Post, func.coalesce(func.sum(models.Vote.dir), 0).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
-            models.Post.id == id).first()
+    votes_subquery = db.query(models.Vote.post_id, func.sum(models.Vote.dir).label("vote_sum")).group_by(models.Vote.post_id).subquery()
+    comments_subquery = db.query(models.Comment.post_id, func.count(models.Comment.id).label("comment_count")).group_by(models.Comment.post_id).subquery()
+
+    post = db.query(
+        models.Post, 
+        func.coalesce(votes_subquery.c.vote_sum, 0).label("votes"),
+        func.coalesce(comments_subquery.c.comment_count, 0).label("comment_count")
+    ).outerjoin(
+        votes_subquery, models.Post.id == votes_subquery.c.post_id
+    ).outerjoin(
+        comments_subquery, models.Post.id == comments_subquery.c.post_id
+    ).filter(
+        models.Post.id == id
+    ).first()
 
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
@@ -84,16 +118,25 @@ def update_post(id: str, post: schemas.PostUpdate, db: Session = Depends(get_db)
     if post_found.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-    # Filter out fields that are not provided in the request body
     update_data = post.model_dump(exclude_unset=True)
-    
     if update_data:
         post_query.update(update_data, synchronize_session=False)
         db.commit()
 
-    # Fetch updated post with votes
-    updated_post = db.query(models.Post, func.coalesce(func.sum(models.Vote.dir), 0).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
-            models.Post.id == id).first()
+    # Re-fetch with counts
+    votes_subquery = db.query(models.Vote.post_id, func.sum(models.Vote.dir).label("vote_sum")).group_by(models.Vote.post_id).subquery()
+    comments_subquery = db.query(models.Comment.post_id, func.count(models.Comment.id).label("comment_count")).group_by(models.Comment.post_id).subquery()
+
+    updated_post = db.query(
+        models.Post, 
+        func.coalesce(votes_subquery.c.vote_sum, 0).label("votes"),
+        func.coalesce(comments_subquery.c.comment_count, 0).label("comment_count")
+    ).outerjoin(
+        votes_subquery, models.Post.id == votes_subquery.c.post_id
+    ).outerjoin(
+        comments_subquery, models.Post.id == comments_subquery.c.post_id
+    ).filter(
+        models.Post.id == id
+    ).first()
 
     return updated_post

@@ -16,3 +16,4 @@ class Post(Base):
     owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     
     owner = relationship("User")
+    comments = relationship("Comment", back_populates="post")

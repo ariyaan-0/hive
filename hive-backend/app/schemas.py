@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, Literal
+from typing import Optional, List, Literal
 from datetime import datetime
 from uuid import UUID
 
@@ -51,6 +51,23 @@ class TokenData(BaseModel):
     id: Optional[str] = None
 
 
+class CommentBase(BaseModel):
+    content: str
+    post_id: UUID
+
+class CommentCreate(CommentBase):
+    pass
+
+class Comment(CommentBase):
+    id: UUID
+    created_at: datetime
+    user_id: UUID
+    user: PostOwner
+
+    model_config = {
+        "from_attributes": True
+    }
+
 
 class PostBase(BaseModel):
     title: str
@@ -80,6 +97,7 @@ class Post(PostBase):
 class PostOut(BaseModel):
     Post: Post
     votes: int
+    comment_count: int
 
     model_config = {
         "from_attributes": True
