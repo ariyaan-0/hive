@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from . import models
 from .db.session import engine
 from .api.v1.api import api_router
@@ -8,6 +9,15 @@ from .core.exceptions import AppException
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Hive API", version="1.0.0")
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.exception_handler(AppException)
 async def app_exception_handler(request: Request, exc: AppException):
