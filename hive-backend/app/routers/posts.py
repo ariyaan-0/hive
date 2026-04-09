@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Response
+from fastapi import APIRouter, Depends, status, HTTPException, Response, File, UploadFile, Form
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .. import models, schemas, oauth2
 from ..database import get_db
+from ..utils import media
 
 router = APIRouter(
     prefix="/posts",
@@ -60,8 +61,28 @@ def get_user_posts(user_id: Optional[str] = None, db: Session = Depends(get_db),
     return posts
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_posts(post : schemas.PostCreate, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
-    new_post = models.Post(owner_id=current_user.id, **post.model_dump())
+def create_posts(
+    title: str = Form(...),
+    content: str = Form(...),
+    published: bool = Form(True),
+    file: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db), 
+    current_user: models.User = Depends(oauth2.get_current_user)
+):
+    imageURL = None
+    if file:
+        imageURL = media.upload_image(file.file, file.filename, folder="/posts")
+        if not imageURL:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to upload image")
+
+    new_post = models.Post(
+        owner_id=current_user.id,
+        title=title,
+        content=content,
+        published=published,
+        imageURL=imageURL
+    )
+    
     db.add(new_post)
     db.commit()
     db.refresh(new_post)

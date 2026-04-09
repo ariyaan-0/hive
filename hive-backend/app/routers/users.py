@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Response
+from fastapi import APIRouter, Depends, status, HTTPException, Response, File, UploadFile, Form
 from sqlalchemy.orm import Session
-from .. import models, schemas, utils
+from typing import Optional
+from .. import models, schemas
 from ..database import get_db
+from ..utils import auth, media
 
 
 router = APIRouter(
@@ -10,13 +12,38 @@ router = APIRouter(
 )
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(
+    name: str = Form(...),
+    username: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    bio: Optional[str] = Form(None),
+    file: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    """
+    Best practice: Use multipart/form-data for file uploads and text inputs.
+    We handle hashing and storage in the router then save to DB.
+    """
     
     #hash the password
-    hased_password = utils.hash(user.password)
-    user.password = hased_password
+    hashed_password = auth.hash(password)
+    
+    imageURL = None
+    if file:
+        # Upload to ImageKit
+        imageURL = media.upload_image(file.file, file.filename, folder="/users")
+        if not imageURL:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to upload image")
 
-    new_user = models.User(**user.model_dump())
+    new_user = models.User(
+        name=name,
+        username=username,
+        email=email,
+        password=hashed_password,
+        bio=bio,
+        imageURL=imageURL
+    )
     
     db.add(new_user)
     db.commit()
