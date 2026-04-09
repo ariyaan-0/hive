@@ -1,19 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from . import models
-from .database import engine
-from .routers import posts, users, auth, vote, comments
-
+from .db.session import engine
+from .api.v1.api import api_router
+from .core.exceptions import AppException
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(title="Hive API", version="1.0.0")
 
-app.include_router(posts.router)
-app.include_router(users.router)
-app.include_router(auth.router)
-app.include_router(vote.router)
-app.include_router(comments.router)
+@app.exception_handler(AppException)
+async def app_exception_handler(request: Request, exc: AppException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message},
+        headers=exc.headers
+    )
+
+app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
-    return {"message": "Hello world"}
+    return {"message": "Welcome to Hive API. Access v1 at /api/v1"}

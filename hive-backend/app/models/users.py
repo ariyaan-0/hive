@@ -1,7 +1,7 @@
 from sqlalchemy import Column, UUID, String, Boolean
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
-from ..database import Base
+from ..db.session import Base
 
 class User(Base):
     __tablename__ = "users"

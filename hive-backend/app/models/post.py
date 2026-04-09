@@ -2,7 +2,7 @@ from sqlalchemy import Column, UUID, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
-from ..database import Base
+from ..db.session import Base
 
 class Post(Base):
     __tablename__ = "posts"
