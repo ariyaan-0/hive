@@ -74,12 +74,27 @@ def delete_post(
     service.delete_post(id, current_user.id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.patch("/{id}", response_model=schemas.PostOut)
+@router.patch("/{id}", response_model=schemas.Post)
 def update_post(
     id: UUID, 
-    post: schemas.PostUpdate, 
+    title: Optional[str] = Form(None),
+    content: Optional[str] = Form(None),
+    published: Optional[bool] = Form(None),
+    file: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db), 
     current_user: models.User = Depends(security.get_current_user)
 ):
     service = PostService(db)
-    return service.update_post(id, post.model_dump(exclude_unset=True), current_user.id)
+    
+    update_data = {}
+    if title is not None: update_data["title"] = title
+    if content is not None: update_data["content"] = content
+    if published is not None: update_data["published"] = published
+    
+    if file:
+        imageURL = media.upload_image(file.file, file.filename, folder="/posts")
+        if not imageURL:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to upload image")
+        update_data["imageURL"] = imageURL
+        
+    return service.update_post(id, update_data, current_user.id)

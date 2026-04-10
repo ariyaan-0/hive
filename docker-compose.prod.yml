@@ -1,0 +1,44 @@
+# ── Hive · Production Docker Compose ──
+# Usage: docker compose -f docker-compose.prod.yml up --build -d
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: hive-db-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-hive_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-hive}
+    ports:
+      - "5432:5432"
+    volumes:
+      - hive_pg_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hive_user} -d ${POSTGRES_DB:-hive}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./hive-backend
+      dockerfile: Dockerfile.prod
+    container_name: hive-backend-prod
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      URL_DATABASE: "postgresql://${POSTGRES_USER:-hive_user}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-hive}"
+      SECRET_KEY: ${SECRET_KEY}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      IMAGEKIT_PRIVATE_KEY: ${IMAGEKIT_PRIVATE_KEY}
+      IMAGEKIT_PUBLIC_KEY: ${IMAGEKIT_PUBLIC_KEY}
+      IMAGEKIT_URL: ${IMAGEKIT_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  hive_pg_data_prod:

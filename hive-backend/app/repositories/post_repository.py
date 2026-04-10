@@ -22,6 +22,8 @@ class PostRepository:
             comments_subquery, models.Post.id == comments_subquery.c.post_id
         ).filter(
             models.Post.title.contains(search)
+        ).order_by(
+            models.Post.created_at.desc()
         ).limit(limit).offset(skip).all()
 
     def get_user_posts_with_counts(self, user_id: UUID):

@@ -3,6 +3,7 @@ from ..repositories.post_repository import PostRepository
 from uuid import UUID
 from typing import Optional
 from ..core.exceptions import NotFoundException, ForbiddenException
+from ..utils import media
 
 class PostService:
     def __init__(self, db: Session):
@@ -31,6 +32,10 @@ class PostService:
         
         if post.owner_id != current_user_id:
             raise ForbiddenException()
+            
+        # Detect if we uploaded a dynamically new ImageURL, trigger purge for old
+        if "imageURL" in post_data and post.imageURL and post_data["imageURL"] != post.imageURL:
+            media.delete_image_by_url(post.imageURL)
         
         return self.repository.update(post_id, post_data)
 
@@ -41,5 +46,9 @@ class PostService:
         
         if post.owner_id != current_user_id:
             raise ForbiddenException()
+            
+        # Drop orphaned media physically before Database deletion
+        if post.imageURL:
+            media.delete_image_by_url(post.imageURL)
         
         return self.repository.delete(post_id)

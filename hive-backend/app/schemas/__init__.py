@@ -26,6 +26,16 @@ class UserOut(BaseModel):
         "from_attributes": True
     }
 
+class UserPublicOut(BaseModel):
+    name: str
+    username: str
+    imageURL: Optional[str] = None
+    bio: Optional[str] = None
+
+    model_config = {
+        "from_attributes": True
+    }
+
 class PostOwner(BaseModel):
     id: UUID
     name: str
