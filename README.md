@@ -69,13 +69,30 @@ The current Minimum Viable Product focuses on the core asynchronous social loop:
 
 ## 🏗 Architecture Overview
 
-Hive uses a decoupled **Client-Server Architecture**:
+Hive uses a decoupled **Client-Server Architecture**.
 
+### 🌟 Backend Design Pattern (Built for Scalability)
+To ensure the backend remains maintainable, testable, and highly scalable as the application grows, Hive implements a strict **3-Layer Architecture** (Controller-Service-Repository pattern). This design cleanly separates concerns, demonstrating enterprise-level backend practices:
+
+1. **API Layer (Routers/Controllers):**
+   * **Role:** Handles incoming HTTP requests, authenticates tokens, validates payloads using Pydantic schemas, and returns appropriate HTTP responses.
+   * **Scalability Benefit:** Keeps routing logic extremely lightweight and independent of business rules, making it easy to version APIs (e.g., v1 vs. v2) without duplicating logic.
+
+2. **Service Layer (Business Logic):**
+   * **Role:** The heart of the application. It orchestrates operations, applies complex business rules (e.g., checking if a user has already voted, managing feed ranking algorithms), and processes data.
+   * **Scalability Benefit:** Centralizes business rules so they can be reused across different interfaces (e.g., REST API, WebSockets, background Celery workers). It also drastically simplifies unit testing by allowing easy mocking of data storage.
+
+3. **Repository Layer (Data Access):**
+   * **Role:** Completely encapsulates physical database interaction using SQLAlchemy. It is the only layer that actively executes SQL queries and manages ORM sessions.
+   * **Scalability Benefit:** Decoupling data access means that if we need to introduce database sharding, switch ORMs, or add a Redis caching layer for read-heavy operations, we only modify the repositories. The Service and API layers remain completely untouched.
+
+### Request Flow
 1. **Client Request:** The React frontend makes RESTful HTTP requests to the FastAPI backend.
-2. **API Layer:** FastAPI validates incoming request data using Pydantic schemas. Authentication middleware checks the `Authorization: Bearer <token>` header for protected routes.
-3. **Database Layer:** The backend interacts with the PostgreSQL database through SQLAlchemy ORM. Complex aggregations (like vote counts and comment counts) are handled efficiently using SQL `OUTER JOIN`s and `COUNT` functions.
-4. **Asset Management:** When a user uploads an image (profile picture or post media), the backend securely proxies the file to **ImageKit** and stores only the resulting optimized CDN URL in the database.
-5. **Deployment:** On every push to `main`, GitHub Actions builds the Docker images, SSHs into the VPS, pulls the code, applies DB migrations via Alembic, and spins up the new containers using Docker Compose.
+2. **Routing:** The API layer receives the request, delegates the workload to the appropriate Service class.
+3. **Processing:** The Service layer executes business logic and requests necessary data by calling methods on the Repository layer.
+4. **Data Retrieval:** The Repository interacts with PostgreSQL. Complex aggregations are handled efficiently via SQL `OUTER JOIN`s before returning mapped entities to the Service.
+5. **Asset Management:** Uploaded images are securely proxied to **ImageKit**, caching the optimized CDN URL in the DB.
+6. **Deployment:** Pushes to `main` trigger GitHub Actions to build Docker images, SSH into the VPS, apply Alembic migrations, and spin up new instances via Docker Compose.
 
 ---
 
