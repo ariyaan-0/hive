@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./hive-frontend/src/assets/hiveroom.png.png" alt="Hive Logo" width="120" />
+  <img src="./hive-frontend/src/assets/logo.png" alt="Hive logo" width="120" />
   <h1>Hive (Hive Room)</h1>
   <p><strong>A Hyperlocal Social Media Application based on Proximity</strong></p>
 
