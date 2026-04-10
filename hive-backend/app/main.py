@@ -13,10 +13,10 @@ app = FastAPI(title="Hive API", version="1.0.0")
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # "http://localhost:3000",
-    # "https://hiveroom.online",
-    # "https://www.hiveroom.online",
-    # "https://hive-mu-lemon.vercel.app"
+    "http://localhost:3000",
+    "https://hiveroom.online",
+    "https://www.hiveroom.online",
+    "https://hive-mu-lemon.vercel.app"
 ]
 
 app.add_middleware(
