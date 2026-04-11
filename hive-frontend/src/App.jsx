@@ -2,7 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import AuthPage from './pages/AuthPage/AuthPage'
 import MainLayout from './components/layout/MainLayout'
 import FeedPage from './pages/FeedPage/FeedPage'
-import PlaceholderPage from './pages/PlaceholderPage'
+import ExplorePage from './pages/ExplorePage/ExplorePage'
+import ChatPage from './pages/ChatPage/ChatPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import { useAuth } from './contexts/AuthContext'
 
@@ -25,8 +26,8 @@ function App() {
         </PrivateRoute>
       }>
         <Route index element={<FeedPage />} />
-        <Route path="chat" element={<PlaceholderPage title="Chats" />} />
-        <Route path="explore" element={<PlaceholderPage title="Explore" />} />
+        <Route path="chat" element={<ChatPage />} />
+        <Route path="explore" element={<ExplorePage />} />
         
         {/* Profile Routes */}
         <Route path="profile" element={<ProfilePage />} />

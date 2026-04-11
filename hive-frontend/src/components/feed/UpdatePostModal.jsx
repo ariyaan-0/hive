@@ -1,6 +1,7 @@
 import { ImagePlus, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { api } from '../../utils/api';
+import { validateFileSize } from '../../utils/fileValidation';
 
 const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
   const [title, setTitle] = useState('');
@@ -58,6 +59,13 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      const sizeError = validateFileSize(file);
+      if (sizeError) {
+        setError(sizeError);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+      setError('');
       setSelectedFile(file);
       setCurrentImage(URL.createObjectURL(file)); // Show preview instantly
     }

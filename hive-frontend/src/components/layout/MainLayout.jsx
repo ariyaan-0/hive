@@ -25,7 +25,7 @@ const MainLayout = () => {
               <NavLink 
                 to="/chat" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-sm) transition-all duration-200 uppercase tracking-widest font-medium ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
                     isActive 
                       ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
                       : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
@@ -38,7 +38,7 @@ const MainLayout = () => {
               <NavLink 
                 to="/explore" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-sm) transition-all duration-200 uppercase tracking-widest font-medium ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
                     isActive 
                       ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
                       : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
@@ -51,7 +51,7 @@ const MainLayout = () => {
               <NavLink 
                 to="/profile" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-sm) transition-all duration-200 uppercase tracking-widest font-medium ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
                     isActive 
                       ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
                       : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
@@ -65,7 +65,7 @@ const MainLayout = () => {
 
           <button 
             onClick={handleSignout}
-            className="px-4 py-2 text-(--text-sm) uppercase tracking-widest font-medium text-(--color-text-muted) hover:text-(--color-primary-500) transition-colors"
+            className="px-4 py-2 text-(--text-lg) font-heading font-bold italic text-(--color-text-muted) hover:text-(--color-primary-500) transition-colors"
           >
             Signout
           </button>

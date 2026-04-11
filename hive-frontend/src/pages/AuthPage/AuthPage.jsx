@@ -55,6 +55,8 @@ function AuthPage() {
       newErrors.username = 'Username is required'
     } else if (registerForm.username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters'
+    } else if (!/^[a-zA-Z0-9]+$/.test(registerForm.username)) {
+      newErrors.username = 'Letters and numbers only'
     }
     if (!registerForm.email.trim()) {
       newErrors.email = 'Email is required'
@@ -268,10 +270,10 @@ function AuthPage() {
               />
               <FormField
                 id="register-username"
-                label="Username"
+                label="Username (Letters & numbers only)"
                 type="text"
                 name="username"
-                placeholder="Choose a username"
+                placeholder="e.g. alicewonder"
                 value={registerForm.username}
                 onChange={handleRegisterChange}
                 error={errors.username}

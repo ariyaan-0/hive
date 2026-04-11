@@ -1,5 +1,6 @@
 import { X, ArrowUp, ArrowDown, MessageSquare, Send, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import ConfirmModal from '../common/ConfirmModal';
@@ -184,7 +185,7 @@ const PostModal = ({ post, onClose }) => {
           {/* Main Post Section */}
           <div className="p-6 bg-(--color-card-bg) border-b border-(--color-divider)">
             <p className="text-(--text-sm) text-(--color-text-muted) font-light mb-4">
-              Posted by <span className="text-(--color-primary-500) font-medium">{authorName}</span> • {getRelativeTime(post.created_at || post.timestamp)}
+              Posted by <Link to={`/profile/${post.owner?.id || post.username}`} onClick={(e) => e.stopPropagation()} className="text-(--color-primary-500) font-medium hover:underline">{authorName}</Link> • {getRelativeTime(post.created_at || post.timestamp)}
             </p>
             
             <div className="text-(--text-base) text-(--color-text-body) leading-relaxed mb-6 whitespace-pre-wrap">
@@ -228,7 +229,17 @@ const PostModal = ({ post, onClose }) => {
               comments.map(comment => (
                 <div key={comment.id} className="bg-(--color-card-bg) p-4 rounded-xl border border-(--color-divider) shadow-sm">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-(--text-sm) font-medium text-(--color-primary-500)">{comment.owner?.username || comment.user?.username || 'Anonymous'}</span>
+                    {comment.owner?.id || comment.user?.id || comment.owner_id || comment.user_id ? (
+                      <Link 
+                        to={`/profile/${comment.owner?.id || comment.user?.id || comment.owner_id || comment.user_id}`} 
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-(--text-sm) font-medium text-(--color-primary-500) hover:underline"
+                      >
+                        {comment.owner?.username || comment.user?.username || 'Anonymous'}
+                      </Link>
+                    ) : (
+                      <span className="text-(--text-sm) font-medium text-(--color-primary-500)">{comment.owner?.username || comment.user?.username || 'Anonymous'}</span>
+                    )}
                     <span className="text-(--text-xs) font-light text-(--color-text-placeholder)">{getRelativeTime(comment.created_at || comment.timestamp)}</span>
                   </div>
                   <p className="text-(--text-sm) text-(--color-text-body)">{comment.content || comment.text}</p>

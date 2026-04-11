@@ -1,6 +1,7 @@
 import { X, ImagePlus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../../utils/api';
+import { validateFileSize } from '../../utils/fileValidation';
 
 const UpdateProfileModal = ({ user, isOpen, onClose }) => {
   const fileInputRef = useRef(null);
@@ -26,6 +27,13 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const sizeError = validateFileSize(file);
+      if (sizeError) {
+        setError(sizeError);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+      setError('');
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
     }
@@ -37,6 +45,12 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
     
     // Construct FormData correctly packaging files and strings
     const formData = new FormData(e.target);
+    const username = formData.get('username');
+
+    if (username && username.trim() !== '' && !/^[a-zA-Z0-9]+$/.test(username)) {
+      setError('Username must contain only letters and numbers (no special characters or spaces).');
+      return;
+    }
     
     // Remove empty fields to avoid overriding valid ones with null values
     const keysToRemove = [];
@@ -114,7 +128,7 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
                   onChange={handleImageChange}
                 />
               </div>
-              <p className="text-(--text-xs) text-(--color-text-muted)">JPG, PNG, GIF max 5MB (Optional)</p>
+              <p className="text-(--text-xs) text-(--color-text-muted)">JPG, PNG, GIF — max 5MB (Optional)</p>
             </div>
 
             {/* Fields Grid */}
@@ -136,9 +150,10 @@ const UpdateProfileModal = ({ user, isOpen, onClose }) => {
                   type="text" 
                   name="username"
                   defaultValue={user?.username}
-                  placeholder="e.g. alice_wonder"
+                  placeholder="e.g. alicewonder"
                   className="w-full bg-white border border-(--color-divider) rounded-lg px-4 py-2 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all placeholder:text-(--color-text-placeholder)"
                 />
+                <p className="text-(--text-xs) text-(--color-text-muted)">Letters and numbers only.</p>
               </div>
 
               <div className="space-y-1">
