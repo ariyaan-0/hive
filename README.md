@@ -74,6 +74,8 @@ Hive uses a decoupled **Client-Server Architecture**.
 ### 🌟 Backend Design Pattern (Built for Scalability)
 To ensure the backend remains maintainable, testable, and highly scalable as the application grows, Hive implements a strict **3-Layer Architecture** (Controller-Service-Repository pattern). This design cleanly separates concerns, demonstrating enterprise-level backend practices:
 
+![Arhcitectural Diagram](./hive-backend/diagrams/fastapi_3layer_request_lifecycle_v2.svg)
+
 1. **API Layer (Routers/Controllers):**
    * **Role:** Handles incoming HTTP requests, authenticates tokens, validates payloads using Pydantic schemas, and returns appropriate HTTP responses.
    * **Scalability Benefit:** Keeps routing logic extremely lightweight and independent of business rules, making it easy to version APIs (e.g., v1 vs. v2) without duplicating logic.
@@ -119,6 +121,8 @@ The backend exposes a fully documented OpenAPI (Swagger) interface, accessible a
 ---
 
 ## 🗄 Database Schema Overview
+
+![ERD diagram](./hive-backend/diagrams/erd.png)
 
 The relational PostgreSQL database is designed around four core entities:
 
