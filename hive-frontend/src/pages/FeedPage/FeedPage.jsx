@@ -32,7 +32,7 @@ const FeedPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col-reverse lg:flex-row gap-8">
         
         {/* Left Side: Posts Feed (2/3) */}
         <div className="w-full lg:w-2/3">
