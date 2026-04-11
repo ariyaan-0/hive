@@ -106,9 +106,13 @@ The backend exposes a fully documented OpenAPI (Swagger) interface, accessible a
 | `POST` | `/api/v1/auth/login` | Authenticate and retrieve JWT payload | No |
 | `POST` | `/api/v1/users/` | Register a new user | No |
 | `GET`  | `/api/v1/users/{id}` | Get user profile (public or private depending on token) | Yes |
+| `PUT`  | `/api/v1/users/{id}` | Update user profile details and avatar | Yes (Owner) |
+| `DELETE`| `/api/v1/users/{id}` | Permanently delete user account | Yes (Owner) |
 | `GET`  | `/api/v1/posts/` | Fetch paginated feed of posts (includes vote/comment count) | Yes |
 | `POST` | `/api/v1/posts/` | Create a new post (supports `multipart/form-data` for images) | Yes |
 | `PATCH`| `/api/v1/posts/{id}` | Update existing post details | Yes (Owner) |
+| `DELETE`| `/api/v1/posts/{id}` | Delete a specific post | Yes (Owner) |
+| `GET`  | `/api/v1/comments/{post_id}`| Fetch all comments for a specific post | Yes |
 | `POST` | `/api/v1/comments/` | Append a comment to a specific post | Yes |
 | `POST` | `/api/v1/vote/` | Upvote (`1`), Downvote (`-1`), or Remove Vote (`0`) on a post | Yes |
 
