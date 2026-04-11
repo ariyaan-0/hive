@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../utils/api';
+import { api, BASE_URL } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     formData.append('password', password);
 
     // Call fetch directly since api.js binds the token natively which might cross-contaminate Login.
-    const res = await fetch('http://localhost:8000/api/v1/auth/login', {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (formData) => {
     // formData contains Name, Email, Username, Password, Bio, File
-    const res = await fetch('http://localhost:8000/api/v1/users/', {
+    const res = await fetch(`${BASE_URL}/users/`, {
       method: 'POST',
       body: formData
     });
