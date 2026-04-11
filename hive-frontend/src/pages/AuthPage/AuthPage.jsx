@@ -117,16 +117,16 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-page-bg" id="auth-page">
+    <div className="flex flex-col md:flex-row min-h-screen bg-page-bg" id="auth-page">
 
       {/* ---- LEFT: Branding ---- */}
       <div
-        className="flex flex-1 items-center justify-end relative overflow-hidden pr-15 pl-12 py-12"
+        className="flex flex-1 items-center justify-center md:justify-end relative overflow-hidden px-8 py-10 md:pr-15 md:pl-12 md:py-12"
         id="auth-branding"
       >
-        <div className="relative z-10 text-left" id="branding-content">
+        <div className="relative z-10 text-center md:text-left" id="branding-content">
           {/* Honeycomb icon */}
-          <div className="mb-6 animate-fade-in-up-slow" aria-hidden="true">
+          <div className="mb-6 animate-fade-in-up-slow flex justify-center md:justify-start" aria-hidden="true">
             <svg
               width="52" height="56" viewBox="0 0 52 56"
               fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +140,7 @@ function AuthPage() {
           </div>
 
           <h1
-            className="font-heading italic font-bold text-[48px] leading-[1.1] text-primary-500 tracking-tight mb-4 animate-fade-in-up-d1"
+            className="font-heading italic font-bold text-[40px] md:text-[48px] leading-[1.1] text-primary-500 tracking-tight mb-4 animate-fade-in-up-d1"
             id="brand-name"
           >
             HiveRoom
@@ -165,7 +165,7 @@ function AuthPage() {
 
       {/* ---- RIGHT: Auth Form ---- */}
       <div
-        className="flex flex-1 flex-col items-start justify-center pl-15 pr-12 py-12"
+        className="flex flex-1 flex-col items-center md:items-start justify-center px-4 py-8 md:pl-15 md:pr-12 md:py-12"
         id="auth-form-wrapper"
       >
         <div

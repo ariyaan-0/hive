@@ -1,7 +1,9 @@
-import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
+import { Home, MessageCircle, Compass, User } from 'lucide-react';
 
 const MainLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignout = () => {
     // In actual implementation, clear auth tokens here.
@@ -73,9 +75,29 @@ const MainLayout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1">
+      <main className="flex-1 pb-20 md:pb-0">
         <Outlet />
       </main>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-(--color-surface) border-t border-(--color-divider) flex justify-around items-center h-16 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2">
+        <Link to="/" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+          <Home className="w-6 h-6" />
+          <span className="text-[10px] font-medium">Home</span>
+        </Link>
+        <Link to="/chat" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/chat' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+          <MessageCircle className="w-6 h-6" />
+          <span className="text-[10px] font-medium">Chats</span>
+        </Link>
+        <Link to="/explore" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/explore' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+          <Compass className="w-6 h-6" />
+          <span className="text-[10px] font-medium">Explore</span>
+        </Link>
+        <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname.startsWith('/profile') ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+          <User className="w-6 h-6" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </Link>
+      </nav>
     </div>
   );
 };
