@@ -1,13 +1,15 @@
 import { Outlet, NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Home, MessageCircle, Compass, User } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { logout } = useAuth();
+
   const handleSignout = () => {
-    // In actual implementation, clear auth tokens here.
-    navigate('/auth');
+    logout();
   };
 
   return (

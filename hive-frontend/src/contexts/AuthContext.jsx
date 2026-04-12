@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('hive_token');
     setUser(null);
-    navigate('/auth');
+    navigate('/auth', { replace: true });
   };
 
   return (
