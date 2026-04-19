@@ -64,22 +64,22 @@ const PostItem = ({ post, votes, commentCount, onClick, onInteraction }) => {
 
   return (
     <div 
-      className="bg-(--color-card-bg) border border-(--color-divider) rounded-xl shadow-[var(--shadow-card)] p-5 mb-6 transition-transform hover:-translate-y-1 duration-300 cursor-pointer"
+      className="bg-card-bg border border-divider rounded-xl shadow-[var(--shadow-card)] p-5 mb-6 transition-transform hover:-translate-y-1 duration-300 cursor-pointer"
       onClick={onClick}
     >
       
       {/* Post Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-heading font-medium text-(--text-lg) text-(--color-text-heading)">
+          <h3 className="font-heading font-medium text-(--text-lg) text-text-heading">
             {post.title}
           </h3>
-          <p className="text-(--text-xs) text-(--color-text-muted) font-light mt-1 flex items-center gap-1">
+          <p className="text-(--text-xs) text-text-muted font-light mt-1 flex items-center gap-1">
             Posted by 
             <Link 
               to={`/profile/${authorId}`}
               onClick={(e) => e.stopPropagation()}
-              className="text-(--color-primary-500) font-medium hover:underline"
+              className="text-primary-500 font-medium hover:underline"
             >
               {authorName}
             </Link> 
@@ -89,33 +89,33 @@ const PostItem = ({ post, votes, commentCount, onClick, onInteraction }) => {
       </div>
 
       {/* Post Body */}
-      <div className="text-(--text-base) text-(--color-text-body) leading-relaxed mb-4 whitespace-pre-wrap">
+      <div className="text-(--text-base) text-text-body leading-relaxed mb-4 whitespace-pre-wrap">
         {post.content}
       </div>
 
       {/* Post Image (Optional) */}
       {(post.imageURL || post.image) && (
-        <div className="mb-4 rounded-lg overflow-hidden border border-(--color-divider)">
+        <div className="mb-4 rounded-lg overflow-hidden border border-divider">
           <img src={post.imageURL || post.image} alt="Post content" className="w-full h-auto object-cover max-h-96" />
         </div>
       )}
 
       {/* Post Footer Interactions */}
-      <div className="flex items-center gap-6 pt-4 border-t border-(--color-divider) text-(--color-text-muted)">
-        <div className="flex items-center gap-3 bg-(--color-surface) rounded-full px-4 py-1.5 border border-(--color-divider)" onClick={e => e.stopPropagation()}>
-          <button onClick={(e) => submitVote(e, 1)} className="flex items-center hover:text-(--color-primary-500) transition-colors">
+      <div className="flex items-center gap-6 pt-4 border-t border-divider text-text-muted">
+        <div className="flex items-center gap-3 bg-surface rounded-full px-4 py-1.5 border border-divider" onClick={e => e.stopPropagation()}>
+          <button onClick={(e) => submitVote(e, 1)} className="flex items-center hover:text-primary-500 transition-colors">
             <ArrowUp className="w-5 h-5" />
           </button>
           
-          <span className="text-(--text-sm) font-medium text-(--color-text-heading)">{voteSum}</span>
+          <span className="text-(--text-sm) font-medium text-text-heading">{voteSum}</span>
           
-          <button onClick={(e) => submitVote(e, -1)} className="flex items-center hover:text-(--color-danger) transition-colors">
+          <button onClick={(e) => submitVote(e, -1)} className="flex items-center hover:text-danger transition-colors">
             <ArrowDown className="w-5 h-5" />
           </button>
         </div>
 
         <button 
-          className="flex items-center gap-2 hover:text-(--color-primary-500) transition-colors"
+          className="flex items-center gap-2 hover:text-primary-500 transition-colors"
           onClick={(e) => handleAction(e, 'comment')}
         >
           <MessageSquare className="w-5 h-5" />
@@ -126,7 +126,7 @@ const PostItem = ({ post, votes, commentCount, onClick, onInteraction }) => {
       {/* Inline Comment Input */}
       {showCommentInput && (
         <form 
-          className="mt-4 pt-4 border-t border-(--color-divider) animate-fade-in-up"
+          className="mt-4 pt-4 border-t border-divider animate-fade-in-up"
           onClick={e => e.stopPropagation()}
           onSubmit={submitComment}
         >
@@ -136,9 +136,9 @@ const PostItem = ({ post, votes, commentCount, onClick, onInteraction }) => {
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder={`Comment on "${post.title}"...`} 
-              className="flex-1 bg-white border border-(--color-divider) rounded-full px-4 py-2 text-(--text-sm) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all placeholder:text-(--color-text-placeholder)"
+              className="flex-1 bg-card-bg border border-divider rounded-full px-4 py-2 text-(--text-sm) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all placeholder:text-text-placeholder"
             />
-            <button type="submit" className="p-2 bg-(--color-primary-500) hover:bg-(--color-primary-700) text-white rounded-full transition-colors shadow-[var(--shadow-btn)]">
+            <button type="submit" className="p-2 bg-primary-500 hover:bg-primary-700 text-primary-text rounded-full transition-colors shadow-[var(--shadow-btn)]">
               <Send className="w-4 h-4" />
             </button>
           </div>

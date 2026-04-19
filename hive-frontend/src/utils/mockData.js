@@ -3,7 +3,7 @@ export const CURRENT_USER = {
   name: "Aryan Hossain",
   email: "aryan.hossain@example.com",
   bio: "Designer, Developer, and coffee lover. Building things for the web.",
-  profilePicture: "https://ui-avatars.com/api/?name=Aryan+Hossain&background=A0622A&color=fff&size=200"
+  profilePicture: "https://ui-avatars.com/api/?name=Aryan+Hossain&background=000000&color=fff&size=200"
 };
 
 export const USERS = {

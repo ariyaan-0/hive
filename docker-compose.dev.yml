@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: hive_pass
       POSTGRES_DB: hive
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - hive_pg_data_dev:/var/lib/postgresql/data
     healthcheck:

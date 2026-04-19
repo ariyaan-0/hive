@@ -57,8 +57,8 @@ const CreatePostForm = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="bg-(--color-card-bg) border border-(--color-divider) rounded-xl shadow-[var(--shadow-card)] p-5 sticky top-24">
-      <h2 className="font-heading font-medium text-(--text-lg) text-(--color-text-heading) mb-4 border-b border-(--color-divider) pb-2">
+    <div className="bg-card-bg border border-divider rounded-xl shadow-[var(--shadow-card)] p-5 sticky top-24">
+      <h2 className="font-heading font-medium text-(--text-lg) text-text-heading mb-4 border-b border-divider pb-2">
         Create a Post
       </h2>
 
@@ -76,7 +76,7 @@ const CreatePostForm = ({ onPostCreated }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Post Title..." 
-            className="w-full bg-white border border-(--color-divider) rounded-lg px-4 py-2.5 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all placeholder:text-(--color-text-placeholder)"
+            className="w-full bg-card-bg border border-divider rounded-lg px-4 py-2.5 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all placeholder:text-text-placeholder"
           />
         </div>
 
@@ -87,7 +87,7 @@ const CreatePostForm = ({ onPostCreated }) => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Share your thoughts..." 
             rows={4}
-            className="w-full bg-white border border-(--color-divider) rounded-lg px-4 py-2.5 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all resize-none placeholder:text-(--color-text-placeholder)"
+            className="w-full bg-card-bg border border-divider rounded-lg px-4 py-2.5 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all resize-none placeholder:text-text-placeholder"
           ></textarea>
         </div>
 
@@ -95,7 +95,7 @@ const CreatePostForm = ({ onPostCreated }) => {
         <div className="flex items-center justify-between mt-2">
           {/* Image Upload Button */}
           {selectedFile ? (
-            <div className="flex items-center gap-1.5 bg-(--color-primary-50) text-(--color-primary-700) px-3 py-1.5 rounded-full text-(--text-sm) font-medium">
+            <div className="flex items-center gap-1.5 bg-primary-50 text-primary-700 px-3 py-1.5 rounded-full text-(--text-sm) font-medium">
               <ImagePlus className="w-4 h-4" />
               <span className="max-w-[140px] truncate">{selectedFile.name}</span>
               <button
@@ -105,7 +105,7 @@ const CreatePostForm = ({ onPostCreated }) => {
                   setError('');
                   if (fileInputRef.current) fileInputRef.current.value = "";
                 }}
-                className="ml-1 p-0.5 rounded-full hover:bg-(--color-primary-300)/30 transition-colors"
+                className="ml-1 p-0.5 rounded-full hover:bg-primary-300/30 transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -114,7 +114,7 @@ const CreatePostForm = ({ onPostCreated }) => {
             <button 
               type="button" 
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 text-(--color-text-muted) hover:text-(--color-primary-500) transition-colors p-2 -ml-2 rounded-lg hover:bg-(--color-primary-50)"
+              className="flex items-center gap-2 text-text-muted hover:text-primary-500 transition-colors p-2 -ml-2 rounded-lg hover:bg-primary-50"
             >
               <ImagePlus className="w-5 h-5" />
               <span className="text-(--text-sm) font-medium">Add Image</span>
@@ -132,7 +132,7 @@ const CreatePostForm = ({ onPostCreated }) => {
           <button 
             type="submit" 
             disabled={loading || !title.trim() || !content.trim()}
-            className="flex items-center gap-2 bg-(--color-primary-500) hover:bg-(--color-primary-700) disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2 rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all"
+            className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-primary-text px-6 py-2 rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all"
           >
             <Send className="w-4 h-4" />
             <span>{loading ? 'Posting...' : 'Post'}</span>

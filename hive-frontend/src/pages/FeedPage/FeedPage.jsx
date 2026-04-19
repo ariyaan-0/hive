@@ -74,6 +74,22 @@ const FeedPage = () => {
     fetchPosts(); // Refresh feed after creation
   };
 
+  // Surgically update a single post's votes+comments without re-fetching the feed
+  const updatePostStats = async (postId) => {
+    try {
+      const freshPost = await api.get(`/posts/${postId}`);
+      setPosts(prev =>
+        prev.map(wrapper =>
+          wrapper.Post.id === postId
+            ? { ...wrapper, votes: freshPost.votes, comment_count: freshPost.comment_count ?? wrapper.comment_count }
+            : wrapper
+        )
+      );
+    } catch (err) {
+      console.error('Failed to refresh post stats:', err);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
       <div className="flex flex-col-reverse lg:flex-row gap-8">
@@ -88,7 +104,7 @@ const FeedPage = () => {
           
           {loading ? (
              <div className="text-center py-12">
-               <p className="text-(--color-text-muted) animate-pulse font-medium">Loading network feed...</p>
+               <p className="text-text-muted animate-pulse font-medium">Loading network feed...</p>
              </div>
           ) : posts.length > 0 ? (
              <>
@@ -99,33 +115,33 @@ const FeedPage = () => {
                     votes={wrapper.votes}
                     commentCount={wrapper.comment_count}
                     onClick={() => setSelectedPost(wrapper.Post)} 
-                    onInteraction={fetchPosts}
+                    onInteraction={() => updatePostStats(wrapper.Post.id)}
                  />
                ))}
                
                {/* Infinite Scroll Observer Target / Loading More Indicator */}
                <div ref={observerTarget} className="py-6 text-center w-full">
                  {loadingMore ? (
-                   <div className="inline-flex items-center gap-2 text-(--color-text-muted) font-medium animate-pulse">
-                     <span className="w-4 h-4 border-2 border-(--color-primary-500) border-t-transparent rounded-full animate-spin"></span>
+                   <div className="inline-flex items-center gap-2 text-text-muted font-medium animate-pulse">
+                     <span className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></span>
                      Loading more posts...
                    </div>
                  ) : hasMore ? (
                    <button 
                      onClick={loadMorePosts}
-                     className="px-6 py-2 rounded-full border border-(--color-divider) text-(--color-text-body) font-medium text-sm hover:bg-(--color-primary-500) hover:text-white transition-colors"
+                     className="px-6 py-2 rounded-full border border-divider text-text-body font-medium text-sm hover:bg-primary-500 hover:text-primary-text transition-colors"
                    >
                      Load More
                    </button>
                  ) : (
-                   <p className="text-(--color-text-muted) text-sm py-4">You've reached the end of the line!</p>
+                   <p className="text-text-muted text-sm py-4">You've reached the end of the line!</p>
                  )}
                </div>
              </>
           ) : (
-             <div className="text-center py-16 bg-(--color-surface) border border-(--color-divider) rounded-xl shadow-sm">
-                <p className="text-(--color-text-body) font-medium text-lg">It's awfully quiet here.</p>
-                <p className="text-(--color-text-muted) mt-2">Be the first to create a post on the right!</p>
+             <div className="text-center py-16 bg-surface border border-divider rounded-xl shadow-sm">
+                <p className="text-text-body font-medium text-lg">It's awfully quiet here.</p>
+                <p className="text-text-muted mt-2">Be the first to create a post on the right!</p>
              </div>
           )}
         </div>

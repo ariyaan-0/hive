@@ -123,12 +123,12 @@ const PostModal = ({ post, onClose }) => {
       <div className="absolute inset-0" onClick={onClose} />
       
       <div 
-        className="bg-(--color-page-bg) w-full max-w-3xl h-full sm:h-[90vh] sm:rounded-2xl shadow-2xl flex flex-col relative z-10 overflow-hidden animate-fade-in-up"
+        className="bg-page-bg w-full max-w-3xl h-full sm:h-[90vh] sm:rounded-2xl shadow-2xl flex flex-col relative z-10 overflow-hidden animate-fade-in-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between bg-(--color-surface) border-b border-(--color-divider) px-6 py-4 shrink-0 shadow-sm z-20 relative">
-          <h2 className="font-heading font-bold text-(--text-xl) text-(--color-text-heading) truncate pr-4">
+        <div className="flex items-center justify-between bg-surface border-b border-divider px-6 py-4 shrink-0 shadow-sm z-20 relative">
+          <h2 className="font-heading font-bold text-(--text-xl) text-text-heading truncate pr-4">
             {post.title}
           </h2>
           
@@ -138,22 +138,22 @@ const PostModal = ({ post, onClose }) => {
               <div className="relative" ref={settingsRef}>
                 <button 
                   onClick={() => setShowSettings(!showSettings)}
-                  className="p-2 text-(--color-text-muted) hover:text-(--color-primary-500) hover:bg-(--color-primary-50) rounded-full transition-colors"
+                  className="p-2 text-text-muted hover:text-primary-500 hover:bg-primary-50 rounded-full transition-colors"
                 >
                   <MoreHorizontal className="w-5 h-5" />
                 </button>
                 
                 {/* Dropdown Menu */}
                 {showSettings && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-(--color-divider) rounded-xl shadow-lg z-50 overflow-hidden animate-fade-in">
+                  <div className="absolute right-0 mt-2 w-48 bg-card-bg border border-divider rounded-xl shadow-lg z-50 overflow-hidden animate-fade-in">
                     <button 
                       onClick={() => { setShowSettings(false); setShowUpdateModal(true); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left text-(--text-sm) font-medium text-(--color-text-body) hover:bg-(--color-primary-50) hover:text-(--color-primary-500) transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left text-(--text-sm) font-medium text-text-body hover:bg-primary-50 hover:text-primary-500 transition-colors"
                     >
                       <Edit className="w-4 h-4" />
                       Update Post
                     </button>
-                    <div className="h-px bg-(--color-divider) w-full"></div>
+                    <div className="h-px bg-divider w-full"></div>
                     <button 
                       onClick={() => { setShowSettings(false); setShowDeleteModal(true); }}
                       className="w-full flex items-center gap-3 px-4 py-3 text-left text-(--text-sm) font-medium text-red-600 hover:bg-red-50 transition-colors"
@@ -168,7 +168,7 @@ const PostModal = ({ post, onClose }) => {
 
             <button 
               onClick={onClose}
-              className="p-2 text-(--color-text-muted) hover:text-(--color-primary-500) hover:bg-(--color-primary-50) rounded-full transition-colors shrink-0"
+              className="p-2 text-text-muted hover:text-primary-500 hover:bg-primary-50 rounded-full transition-colors shrink-0"
             >
               <X className="w-6 h-6" />
             </button>
@@ -183,29 +183,29 @@ const PostModal = ({ post, onClose }) => {
             </div>
           )}
           {/* Main Post Section */}
-          <div className="p-6 bg-(--color-card-bg) border-b border-(--color-divider)">
-            <p className="text-(--text-sm) text-(--color-text-muted) font-light mb-4">
-              Posted by <Link to={`/profile/${post.owner?.id || post.username}`} onClick={(e) => e.stopPropagation()} className="text-(--color-primary-500) font-medium hover:underline">{authorName}</Link> • {getRelativeTime(post.created_at || post.timestamp)}
+          <div className="p-6 bg-card-bg border-b border-divider">
+            <p className="text-(--text-sm) text-text-muted font-light mb-4">
+              Posted by <Link to={`/profile/${post.owner?.id || post.username}`} onClick={(e) => e.stopPropagation()} className="text-primary-500 font-medium hover:underline">{authorName}</Link> • {getRelativeTime(post.created_at || post.timestamp)}
             </p>
             
-            <div className="text-(--text-base) text-(--color-text-body) leading-relaxed mb-6 whitespace-pre-wrap">
+            <div className="text-(--text-base) text-text-body leading-relaxed mb-6 whitespace-pre-wrap">
               {post.content}
             </div>
 
             {(post.imageURL || post.image) && (
-              <div className="mb-6 rounded-lg overflow-hidden border border-(--color-divider)">
+              <div className="mb-6 rounded-lg overflow-hidden border border-divider">
                 <img src={post.imageURL || post.image} alt="Post content" className="w-full h-auto max-h-[500px] object-cover" />
               </div>
             )}
 
             {/* Interaction Bar */}
-            <div className="flex items-center gap-6 text-(--color-text-muted)">
-              <div className="flex items-center gap-3 bg-(--color-surface) rounded-full px-4 py-1.5 border border-(--color-divider)">
-                <button onClick={() => submitVote(1)} className="flex items-center hover:text-(--color-primary-500) transition-colors">
+            <div className="flex items-center gap-6 text-text-muted">
+              <div className="flex items-center gap-3 bg-surface rounded-full px-4 py-1.5 border border-divider">
+                <button onClick={() => submitVote(1)} className="flex items-center hover:text-primary-500 transition-colors">
                   <ArrowUp className="w-5 h-5" />
                 </button>
-                <span className="text-(--text-sm) font-medium text-(--color-text-heading)">{localVoteSum}</span>
-                <button onClick={() => submitVote(-1)} className="flex items-center hover:text-(--color-danger) transition-colors">
+                <span className="text-(--text-sm) font-medium text-text-heading">{localVoteSum}</span>
+                <button onClick={() => submitVote(-1)} className="flex items-center hover:text-danger transition-colors">
                   <ArrowDown className="w-5 h-5" />
                 </button>
               </div>
@@ -219,49 +219,49 @@ const PostModal = ({ post, onClose }) => {
 
           {/* Comments Section */}
           <div className="p-6 pb-24 space-y-6">
-            <h3 className="font-heading font-medium text-(--text-lg) text-(--color-text-heading) mb-4">
+            <h3 className="font-heading font-medium text-(--text-lg) text-text-heading mb-4">
               Comments
             </h3>
             
             {loading ? (
-              <p className="text-center text-(--color-text-muted) animate-pulse py-8">Loading comments...</p>
+              <p className="text-center text-text-muted animate-pulse py-8">Loading comments...</p>
              ) : comments && comments.length > 0 ? (
               comments.map(comment => (
-                <div key={comment.id} className="bg-(--color-card-bg) p-4 rounded-xl border border-(--color-divider) shadow-sm">
+                <div key={comment.id} className="bg-card-bg p-4 rounded-xl border border-divider shadow-sm">
                   <div className="flex justify-between items-start mb-2">
                     {comment.owner?.id || comment.user?.id || comment.owner_id || comment.user_id ? (
                       <Link 
                         to={`/profile/${comment.owner?.id || comment.user?.id || comment.owner_id || comment.user_id}`} 
                         onClick={(e) => e.stopPropagation()}
-                        className="text-(--text-sm) font-medium text-(--color-primary-500) hover:underline"
+                        className="text-(--text-sm) font-medium text-primary-500 hover:underline"
                       >
                         {comment.owner?.username || comment.user?.username || 'Anonymous'}
                       </Link>
                     ) : (
-                      <span className="text-(--text-sm) font-medium text-(--color-primary-500)">{comment.owner?.username || comment.user?.username || 'Anonymous'}</span>
+                      <span className="text-(--text-sm) font-medium text-primary-500">{comment.owner?.username || comment.user?.username || 'Anonymous'}</span>
                     )}
-                    <span className="text-(--text-xs) font-light text-(--color-text-placeholder)">{getRelativeTime(comment.created_at || comment.timestamp)}</span>
+                    <span className="text-(--text-xs) font-light text-text-placeholder">{getRelativeTime(comment.created_at || comment.timestamp)}</span>
                   </div>
-                  <p className="text-(--text-sm) text-(--color-text-body)">{comment.content || comment.text}</p>
+                  <p className="text-(--text-sm) text-text-body">{comment.content || comment.text}</p>
                 </div>
               ))
             ) : (
-              <p className="text-(--text-sm) text-(--color-text-muted) italic">No comments yet. Be the first to start the conversation!</p>
+              <p className="text-(--text-sm) text-text-muted italic">No comments yet. Be the first to start the conversation!</p>
             )}
           </div>
         </div>
 
         {/* Floating/Sticky Comment Input */}
-        <form onSubmit={submitComment} className="absolute left-0 right-0 bottom-0 bg-(--color-surface) border-t border-(--color-divider) p-4 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.05)]">
+        <form onSubmit={submitComment} className="absolute left-0 right-0 bottom-0 bg-surface border-t border-divider p-4 z-20 shadow-[0_-4px_16px_rgba(0,0,0,0.05)]">
           <div className="flex items-center gap-3 max-w-3xl mx-auto">
             <input 
               type="text" 
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder={`Write a comment...`} 
-              className="flex-1 bg-white border border-(--color-divider) rounded-full px-4 py-2.5 text-(--text-sm) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all placeholder:text-(--color-text-placeholder)"
+              className="flex-1 bg-card-bg border border-divider rounded-full px-4 py-2.5 text-(--text-sm) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all placeholder:text-text-placeholder"
             />
-            <button type="submit" disabled={!commentText.trim()} className="p-2.5 bg-(--color-primary-500) hover:bg-(--color-primary-700) disabled:opacity-50 text-white rounded-full transition-colors shadow-[var(--shadow-btn)]">
+            <button type="submit" disabled={!commentText.trim()} className="p-2.5 bg-primary-500 hover:bg-primary-700 disabled:opacity-50 text-primary-text rounded-full transition-colors shadow-[var(--shadow-btn)]">
               <Send className="w-4 h-4" />
             </button>
           </div>

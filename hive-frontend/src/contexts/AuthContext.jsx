@@ -89,8 +89,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading, setUser }}>
       {loading ? (
-        <div className="min-h-screen flex items-center justify-center bg-(--color-page-bg)">
-           <p className="text-(--color-text-muted) animate-pulse font-heading">Loading Hive...</p>
+        <div className="min-h-screen flex items-center justify-center bg-page-bg">
+           <p className="text-text-muted animate-pulse font-heading">Loading Hive...</p>
         </div>
       ) : children}
     </AuthContext.Provider>
