@@ -91,6 +91,22 @@ const ProfilePage = () => {
     fetchProfileData();
   }, [targetId]);
 
+  // Surgically update a single post's vote/comment count without re-fetching everything
+  const updatePostStats = async (postId) => {
+    try {
+      const freshPost = await api.get(`/posts/${postId}`);
+      setUserPosts(prev =>
+        prev.map(wrapper =>
+          wrapper.Post.id === postId
+            ? { ...wrapper, votes: freshPost.votes, comment_count: freshPost.comment_count ?? wrapper.comment_count }
+            : wrapper
+        )
+      );
+    } catch (err) {
+      console.error('Failed to refresh post stats:', err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
@@ -130,7 +146,7 @@ const ProfilePage = () => {
                 votes={wrapper.votes}
                 commentCount={wrapper.comment_count} 
                 onClick={() => setSelectedPost(wrapper.Post)} 
-                onInteraction={fetchProfileData}
+                onInteraction={() => updatePostStats(wrapper.Post.id)}
               />
             ))
           ) : (

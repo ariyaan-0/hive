@@ -74,6 +74,22 @@ const FeedPage = () => {
     fetchPosts(); // Refresh feed after creation
   };
 
+  // Surgically update a single post's votes+comments without re-fetching the feed
+  const updatePostStats = async (postId) => {
+    try {
+      const freshPost = await api.get(`/posts/${postId}`);
+      setPosts(prev =>
+        prev.map(wrapper =>
+          wrapper.Post.id === postId
+            ? { ...wrapper, votes: freshPost.votes, comment_count: freshPost.comment_count ?? wrapper.comment_count }
+            : wrapper
+        )
+      );
+    } catch (err) {
+      console.error('Failed to refresh post stats:', err);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
       <div className="flex flex-col-reverse lg:flex-row gap-8">
@@ -99,7 +115,7 @@ const FeedPage = () => {
                     votes={wrapper.votes}
                     commentCount={wrapper.comment_count}
                     onClick={() => setSelectedPost(wrapper.Post)} 
-                    onInteraction={fetchPosts}
+                    onInteraction={() => updatePostStats(wrapper.Post.id)}
                  />
                ))}
                
