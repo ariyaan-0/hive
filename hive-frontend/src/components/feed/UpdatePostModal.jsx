@@ -77,25 +77,25 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
       <div className="absolute inset-0" onClick={!loading ? onClose : null} />
       
       {/* Modal Container */}
-      <div className="bg-(--color-page-bg) w-full max-w-xl h-auto max-h-[90vh] sm:rounded-2xl shadow-2xl flex flex-col relative z-10 overflow-hidden animate-fade-in-up">
+      <div className="bg-page-bg w-full max-w-xl h-auto max-h-[90vh] sm:rounded-2xl shadow-2xl flex flex-col relative z-10 overflow-hidden animate-fade-in-up">
         
         {/* Header */}
-        <div className="flex items-center justify-between bg-(--color-surface) border-b border-(--color-divider) px-6 py-4 shrink-0 shadow-sm z-20">
-          <h2 className="font-heading font-bold text-(--text-xl) text-(--color-text-heading)">
+        <div className="flex items-center justify-between bg-surface border-b border-divider px-6 py-4 shrink-0 shadow-sm z-20">
+          <h2 className="font-heading font-bold text-(--text-xl) text-text-heading">
             Update Post
           </h2>
           <button 
             onClick={onClose}
             disabled={loading}
             type="button"
-            className="p-2 text-(--color-text-muted) hover:text-(--color-primary-500) hover:bg-(--color-primary-50) rounded-full transition-colors disabled:opacity-50"
+            className="p-2 text-text-muted hover:text-primary-500 hover:bg-primary-50 rounded-full transition-colors disabled:opacity-50"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Form Container */}
-        <div className="flex-1 overflow-y-auto p-6 bg-(--color-page-bg)">
+        <div className="flex-1 overflow-y-auto p-6 bg-page-bg">
           {error && (
             <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm text-center font-medium animate-fade-in">
               {error}
@@ -105,34 +105,34 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
             
             {/* Title Input */}
             <div className="space-y-1.5">
-              <label className="text-(--text-sm) font-medium text-(--color-text-heading)">Title</label>
+              <label className="text-(--text-sm) font-medium text-text-heading">Title</label>
               <input 
                 type="text" 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Post Title..." 
-                className="w-full bg-white border border-(--color-divider) rounded-lg px-4 py-3 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all"
+                className="w-full bg-card-bg border border-divider rounded-lg px-4 py-3 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all"
               />
             </div>
 
             {/* Content Input */}
             <div className="space-y-1.5">
-              <label className="text-(--text-sm) font-medium text-(--color-text-heading)">Content</label>
+              <label className="text-(--text-sm) font-medium text-text-heading">Content</label>
               <textarea 
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Share your thoughts..." 
                 rows={6}
-                className="w-full bg-white border border-(--color-divider) rounded-lg px-4 py-3 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-(--color-primary-500) transition-all resize-y"
+                className="w-full bg-card-bg border border-divider rounded-lg px-4 py-3 text-(--text-base) focus:outline-none focus:ring-[3px] focus:ring-(--color-primary-500)/15 focus:border-primary-500 transition-all resize-y"
               ></textarea>
             </div>
 
             {/* Image Preview & Upload */}
             <div className="space-y-1.5">
-              <label className="text-(--text-sm) font-medium text-(--color-text-heading)">Image Attachment (Optional)</label>
+              <label className="text-(--text-sm) font-medium text-text-heading">Image Attachment (Optional)</label>
               
               {currentImage && (
-                <div className="relative mb-3 rounded-lg overflow-hidden border border-(--color-divider)">
+                <div className="relative mb-3 rounded-lg overflow-hidden border border-divider">
                   <img src={currentImage} alt="Preview" className="w-full h-auto max-h-48 object-cover" />
                   <button 
                     type="button" 
@@ -148,7 +148,7 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
                 <button 
                   type="button" 
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-(--color-divider) rounded-lg py-8 flex flex-col items-center justify-center text-(--color-text-muted) hover:text-(--color-primary-500) hover:border-(--color-primary-300) hover:bg-(--color-primary-50) transition-all"
+                  className="w-full border-2 border-dashed border-divider rounded-lg py-8 flex flex-col items-center justify-center text-text-muted hover:text-primary-500 hover:border-primary-300 hover:bg-primary-50 transition-all"
                 >
                   <ImagePlus className="w-8 h-8 mb-2 opacity-80" />
                   <span className="font-medium text-(--text-sm)">Click to add an image</span>
@@ -168,12 +168,12 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="bg-(--color-surface) border-t border-(--color-divider) p-4 flex justify-end gap-3 z-20">
+        <div className="bg-surface border-t border-divider p-4 flex justify-end gap-3 z-20">
           <button 
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="px-6 py-2.5 rounded-full text-(--color-text-body) font-medium hover:bg-(--color-divider)/50 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full text-text-body font-medium hover:bg-divider/50 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
@@ -181,7 +181,7 @@ const UpdatePostModal = ({ isOpen, onClose, post, onPostUpdated }) => {
             type="submit"
             form="updatePostForm"
             disabled={loading || !title.trim() || !content.trim()}
-            className="bg-(--color-primary-500) hover:bg-(--color-primary-700) text-white px-8 py-2.5 rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary-500 hover:bg-primary-700 text-primary-text px-8 py-2.5 rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Saving...' : 'Save Changes'}
           </button>

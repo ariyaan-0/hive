@@ -88,7 +88,7 @@ const FeedPage = () => {
           
           {loading ? (
              <div className="text-center py-12">
-               <p className="text-(--color-text-muted) animate-pulse font-medium">Loading network feed...</p>
+               <p className="text-text-muted animate-pulse font-medium">Loading network feed...</p>
              </div>
           ) : posts.length > 0 ? (
              <>
@@ -106,26 +106,26 @@ const FeedPage = () => {
                {/* Infinite Scroll Observer Target / Loading More Indicator */}
                <div ref={observerTarget} className="py-6 text-center w-full">
                  {loadingMore ? (
-                   <div className="inline-flex items-center gap-2 text-(--color-text-muted) font-medium animate-pulse">
-                     <span className="w-4 h-4 border-2 border-(--color-primary-500) border-t-transparent rounded-full animate-spin"></span>
+                   <div className="inline-flex items-center gap-2 text-text-muted font-medium animate-pulse">
+                     <span className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></span>
                      Loading more posts...
                    </div>
                  ) : hasMore ? (
                    <button 
                      onClick={loadMorePosts}
-                     className="px-6 py-2 rounded-full border border-(--color-divider) text-(--color-text-body) font-medium text-sm hover:bg-(--color-primary-500) hover:text-white transition-colors"
+                     className="px-6 py-2 rounded-full border border-divider text-text-body font-medium text-sm hover:bg-primary-500 hover:text-primary-text transition-colors"
                    >
                      Load More
                    </button>
                  ) : (
-                   <p className="text-(--color-text-muted) text-sm py-4">You've reached the end of the line!</p>
+                   <p className="text-text-muted text-sm py-4">You've reached the end of the line!</p>
                  )}
                </div>
              </>
           ) : (
-             <div className="text-center py-16 bg-(--color-surface) border border-(--color-divider) rounded-xl shadow-sm">
-                <p className="text-(--color-text-body) font-medium text-lg">It's awfully quiet here.</p>
-                <p className="text-(--color-text-muted) mt-2">Be the first to create a post on the right!</p>
+             <div className="text-center py-16 bg-surface border border-divider rounded-xl shadow-sm">
+                <p className="text-text-body font-medium text-lg">It's awfully quiet here.</p>
+                <p className="text-text-muted mt-2">Be the first to create a post on the right!</p>
              </div>
           )}
         </div>

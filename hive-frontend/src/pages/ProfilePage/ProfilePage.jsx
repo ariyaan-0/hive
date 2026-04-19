@@ -8,34 +8,34 @@ import { api } from '../../utils/api';
 
 const UserProfileCard = ({ user, isOwnProfile, onUpdateClick }) => {
   return (
-    <div className="bg-(--color-card-bg) border border-(--color-divider) rounded-xl shadow-[var(--shadow-card)] p-6 sticky top-24">
+    <div className="bg-card-bg border border-divider rounded-xl shadow-[var(--shadow-card)] p-6 sticky top-24">
       {/* Avatar */}
       <div className="flex justify-center mb-6">
         <img 
-          src={user?.imageURL || 'https://ui-avatars.com/api/?name=User&background=A0622A&color=fff&size=200'} 
+          src={user?.imageURL || 'https://ui-avatars.com/api/?name=User&background=000000&color=fff&size=200'}  
           alt={user?.name || 'User Profile'} 
-          className="w-32 h-32 rounded-full border-4 border-(--color-surface) shadow-sm object-cover"
+          className="w-32 h-32 rounded-full border-4 border-surface shadow-sm object-cover"
         />
       </div>
 
       {/* Primary Details */}
       <div className="text-center mb-6">
-        <h2 className="font-heading font-medium text-(--text-xl) text-(--color-text-heading) mb-1">
+        <h2 className="font-heading font-medium text-(--text-xl) text-text-heading mb-1">
           {user?.name}
         </h2>
-        <p className="text-(--text-sm) font-medium text-(--color-primary-500) mb-4">
+        <p className="text-(--text-sm) font-medium text-primary-500 mb-4">
           @{user?.username}
         </p>
         
         {/* Email - Shown only if own profile */}
         {isOwnProfile && user?.email && (
-          <p className="text-(--text-sm) text-(--color-text-muted) mb-4">
+          <p className="text-(--text-sm) text-text-muted mb-4">
             {user.email}
           </p>
         )}
 
         {/* Bio */}
-        <p className="text-(--text-base) text-(--color-text-body) leading-relaxed">
+        <p className="text-(--text-base) text-text-body leading-relaxed">
           {user?.bio || "No biography provided."}
         </p>
       </div>
@@ -45,7 +45,7 @@ const UserProfileCard = ({ user, isOwnProfile, onUpdateClick }) => {
         <div className="mt-8">
           <button 
             onClick={onUpdateClick}
-            className="w-full py-2.5 bg-(--color-primary-500) hover:bg-(--color-primary-700) text-white rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all"
+            className="w-full py-2.5 bg-primary-500 hover:bg-primary-700 text-primary-text rounded-full font-medium shadow-[var(--shadow-btn)] hover:shadow-[var(--shadow-btn-hover)] transition-all"
           >
             Update Profile
           </button>
@@ -94,7 +94,7 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <p className="text-(--color-text-muted) animate-pulse font-medium">Loading profile...</p>
+        <p className="text-text-muted animate-pulse font-medium">Loading profile...</p>
       </div>
     );
   }
@@ -102,7 +102,7 @@ const ProfilePage = () => {
   if (error || !profileUser) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 className="font-heading text-2xl text-(--color-text-heading)">Profile not found.</h2>
+        <h2 className="font-heading text-2xl text-text-heading">Profile not found.</h2>
       </div>
     );
   }
@@ -134,8 +134,8 @@ const ProfilePage = () => {
               />
             ))
           ) : (
-            <div className="text-center py-16 bg-(--color-surface) border border-(--color-divider) rounded-xl">
-              <p className="text-(--color-text-muted) font-light">
+            <div className="text-center py-16 bg-surface border border-divider rounded-xl">
+              <p className="text-text-muted font-light">
                 {profileUser.name} hasn't posted anything yet.
               </p>
             </div>

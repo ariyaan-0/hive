@@ -1,12 +1,14 @@
 import { Outlet, NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
-import { Home, MessageCircle, Compass, User } from 'lucide-react';
+import { Home, MessageCircle, Compass, User, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleSignout = () => {
     logout();
@@ -15,11 +17,11 @@ const MainLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 bg-(--color-surface) border-b border-(--color-divider) shadow-sm">
+      <header className="sticky top-0 z-50 bg-surface border-b border-divider shadow-sm">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <Link to="/" className="hover:opacity-80 transition-opacity">
-              <h1 className="font-heading italic font-bold text-(--text-2xl) text-(--color-primary-500) tracking-tight">
+              <h1 className="font-heading font-bold text-(--text-2xl) text-primary-500 tracking-tight">
                 Hive
               </h1>
             </Link>
@@ -29,10 +31,10 @@ const MainLayout = () => {
               <NavLink 
                 to="/chat" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold ${
                     isActive 
-                      ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
-                      : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
+                      ? 'bg-primary-500 text-primary-text rounded-full shadow-[var(--shadow-tab-active)]' 
+                      : 'text-text-muted hover:text-primary-500'
                   }`
                 }
               >
@@ -42,10 +44,10 @@ const MainLayout = () => {
               <NavLink 
                 to="/explore" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold ${
                     isActive 
-                      ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
-                      : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
+                      ? 'bg-primary-500 text-primary-text rounded-full shadow-[var(--shadow-tab-active)]' 
+                      : 'text-text-muted hover:text-primary-500'
                   }`
                 }
               >
@@ -55,10 +57,10 @@ const MainLayout = () => {
               <NavLink 
                 to="/profile" 
                 className={({ isActive }) =>
-                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold italic ${
+                  `px-4 py-2 text-(--text-lg) transition-all duration-200 font-heading font-bold ${
                     isActive 
-                      ? 'bg-(--color-primary-500) text-white rounded-full shadow-[var(--shadow-tab-active)]' 
-                      : 'text-(--color-text-muted) hover:text-(--color-primary-500)'
+                      ? 'bg-primary-500 text-primary-text rounded-full shadow-[var(--shadow-tab-active)]' 
+                      : 'text-text-muted hover:text-primary-500'
                   }`
                 }
               >
@@ -67,12 +69,21 @@ const MainLayout = () => {
             </nav>
           </div>
 
-          <button 
-            onClick={handleSignout}
-            className="px-4 py-2 text-(--text-lg) font-heading font-bold italic text-(--color-text-muted) hover:text-(--color-primary-500) transition-colors"
-          >
-            Signout
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-text-muted hover:text-primary-500 transition-colors rounded-full hover:bg-primary-50 cursor-pointer"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <button 
+              onClick={handleSignout}
+              className="px-4 py-2 text-(--text-lg) font-heading font-bold text-text-muted hover:text-primary-500 transition-colors"
+            >
+              Signout
+            </button>
+          </div>
         </div>
       </header>
 
@@ -82,20 +93,20 @@ const MainLayout = () => {
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-(--color-surface) border-t border-(--color-divider) flex justify-around items-center h-16 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2">
-        <Link to="/" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-divider flex justify-around items-center h-16 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2">
+        <Link to="/" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/' ? 'text-primary-500' : 'text-text-muted'}`}>
           <Home className="w-6 h-6" />
           <span className="text-[10px] font-medium">Home</span>
         </Link>
-        <Link to="/chat" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/chat' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+        <Link to="/chat" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/chat' ? 'text-primary-500' : 'text-text-muted'}`}>
           <MessageCircle className="w-6 h-6" />
           <span className="text-[10px] font-medium">Chats</span>
         </Link>
-        <Link to="/explore" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/explore' ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+        <Link to="/explore" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname === '/explore' ? 'text-primary-500' : 'text-text-muted'}`}>
           <Compass className="w-6 h-6" />
           <span className="text-[10px] font-medium">Explore</span>
         </Link>
-        <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname.startsWith('/profile') ? 'text-(--color-primary-500)' : 'text-(--color-text-muted)'}`}>
+        <Link to="/profile" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${location.pathname.startsWith('/profile') ? 'text-primary-500' : 'text-text-muted'}`}>
           <User className="w-6 h-6" />
           <span className="text-[10px] font-medium">Profile</span>
         </Link>

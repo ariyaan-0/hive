@@ -130,17 +130,17 @@ function AuthPage() {
             <svg
               width="52" height="56" viewBox="0 0 52 56"
               fill="none" xmlns="http://www.w3.org/2000/svg"
-              className="drop-shadow-[0_2px_8px_rgba(160,98,42,0.15)]"
+              className="drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)] text-primary-500"
             >
-              <path d="M26 2L48 14V38L26 50L4 38V14L26 2Z" stroke="#A0622A" strokeWidth="2.5" fill="none"/>
-              <path d="M26 10L40 18V34L26 42L12 34V18L26 10Z" stroke="#A0622A" strokeWidth="1.5" fill="rgba(160,98,42,0.08)"/>
-              <path d="M26 18L33 22V30L26 34L19 30V22L26 18Z" fill="#A0622A" opacity="0.25"/>
-              <circle cx="26" cy="26" r="4" fill="#A0622A"/>
+              <path d="M26 2L48 14V38L26 50L4 38V14L26 2Z" stroke="currentColor" strokeWidth="2.5" fill="none"/>
+              <path d="M26 10L40 18V34L26 42L12 34V18L26 10Z" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.08"/>
+              <path d="M26 18L33 22V30L26 34L19 30V22L26 18Z" fill="currentColor" opacity="0.25"/>
+              <circle cx="26" cy="26" r="4" fill="currentColor"/>
             </svg>
           </div>
 
           <h1
-            className="font-heading italic font-bold text-[40px] md:text-[48px] leading-[1.1] text-primary-500 tracking-tight mb-4 animate-fade-in-up-d1"
+            className="font-heading font-bold text-[40px] md:text-[48px] leading-[1.1] text-primary-500 tracking-tight mb-4 animate-fade-in-up-d1"
             id="brand-name"
           >
             HiveRoom
@@ -169,7 +169,7 @@ function AuthPage() {
         id="auth-form-wrapper"
       >
         <div
-          className="w-full max-w-[420px] bg-white rounded-2xl shadow-card p-8 animate-fade-in"
+          className="w-full max-w-[420px] bg-card-bg rounded-2xl shadow-card p-8 animate-fade-in"
           id="auth-card"
         >
           {/* Tab Switcher */}
@@ -178,7 +178,7 @@ function AuthPage() {
               id="tab-login"
               className={`flex-1 py-2.5 px-4 rounded-full font-body text-[13px] font-medium uppercase tracking-[0.05em] cursor-pointer transition-all duration-200
                 ${activeTab === 'login'
-                  ? 'bg-primary-500 text-white shadow-tab-active'
+                  ? 'bg-primary-500 text-primary-text shadow-[var(--shadow-tab-active)]'
                   : 'text-text-muted hover:text-text-body hover:bg-primary-500/5'
                 }`}
               onClick={() => switchTab('login')}
@@ -192,7 +192,7 @@ function AuthPage() {
               id="tab-register"
               className={`flex-1 py-2.5 px-4 rounded-full font-body text-[13px] font-medium uppercase tracking-[0.05em] cursor-pointer transition-all duration-200
                 ${activeTab === 'register'
-                  ? 'bg-primary-500 text-white shadow-tab-active'
+                  ? 'bg-primary-500 text-primary-text shadow-[var(--shadow-tab-active)]'
                   : 'text-text-muted hover:text-text-body hover:bg-primary-500/5'
                 }`}
               onClick={() => switchTab('register')}
@@ -341,7 +341,7 @@ function FormField({ id, label, type, name, placeholder, value, onChange, error,
         id={id}
         type={type}
         name={name}
-        className={`w-full py-3 px-3.5 text-[15px] text-text-body bg-white border rounded-lg transition-all duration-200
+        className={`w-full py-3 px-3.5 text-[15px] text-text-body bg-card-bg border rounded-lg transition-all duration-200
           placeholder:text-text-placeholder
           focus:border-primary-500 focus:shadow-input-focus
           ${error ? 'border-danger focus:border-danger focus:shadow-[0_0_0_3px_rgba(192,57,43,0.12)]' : 'border-divider'}
@@ -364,11 +364,11 @@ function SubmitButton({ loading, label, loadingLabel }) {
   return (
     <button
       type="submit"
-      className="w-full py-3.5 px-6 mt-1.5 text-[15px] font-medium text-white
+      className="w-full py-3.5 px-6 mt-1.5 text-[15px] font-medium text-primary-text
         bg-gradient-to-br from-primary-500 to-primary-700 border-none rounded-full cursor-pointer
         shadow-btn transition-all duration-200
         hover:from-primary-700 hover:to-primary-900 hover:shadow-btn-hover hover:-translate-y-0.5
-        active:translate-y-0 active:shadow-[0_1px_6px_rgba(160,98,42,0.25)]
+        active:translate-y-0 active:shadow-[0_1px_6px_rgba(0,0,0,0.25)]
         disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
       disabled={loading}
     >
